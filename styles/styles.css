@@ -1,0 +1,28 @@
+body{
+    margin: 0 auto;
+}
+
+.menu{
+    padding: 10px 0 10px 10px;
+    background-color: rgb(107, 197, 162);
+}
+
+.cart-button{
+border-radius: 10px;
+background: rgb(11, 201, 11);
+border: 1px solid red;
+outline: none;
+}
+
+.cart-button:active{
+background: white;
+}
+
+.goods-item{
+    margin: 10px;
+    display: inline-block;
+    width: 80px;
+    height: 120px;
+    border: 1px solid black;
+    text-align: center;
+}
