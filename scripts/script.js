@@ -1,20 +1,27 @@
 'use strict';
 
 
-function makeGETRequest(url, callback) {
-    var xhr;
-    if (window.XMLHttpRequest) {
-        xhr = new XMLHttpRequest();
-    } else if (window.ActiveXObject) {
-        xhr = new ActiveXObject("Microsoft.XMLHTTP");
-    }
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4) {
-            callback(xhr.responseText);
+function makeGETRequest(url) {
+
+    const promise = new Promise((resolve, reject) => {
+        var xhr;
+        if (window.XMLHttpRequest) {
+            xhr = new XMLHttpRequest();
+        } else if (window.ActiveXObject) {
+            xhr = new ActiveXObject("Microsoft.XMLHTTP");
         }
-    }
-    xhr.open('GET', url, true);
-    xhr.send();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                //callback(xhr.responseText);
+                resolve(xhr.responseText)
+            }
+        }
+        xhr.open('GET', url, true);
+        xhr.send();
+    })
+
+    return promise;
+
 }
 
 const API_URL = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
@@ -22,16 +29,40 @@ const API_URL = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-sto
 //корзина товаров
 class Basket {
     constructor() {
+        this.goods = []
     }
     addToBasket() {
         //добавление товара в корзину
+        return new Promise((resolve, reject) => {
+            makeGETRequest(`${API_URL}/addToBasket.json`).then((goods) => {
+                this.goods = JSON.parse(goods);
+                resolve();
+            })
+        })
+    }
+    getBasket() {
+        //получение содержимого корзины
+        return new Promise((resolve, reject) => {
+            makeGETRequest(`${API_URL}/getBasket.json`).then((goods) => {
+                this.goods = JSON.parse(goods);
+                resolve();
+            })
+        })
     }
     removeFromBasket() {
         //удаление товара из корзины
+        return new Promise((resolve, reject) => {
+            makeGETRequest(`${API_URL}/deleteFromBasket.json`).then((goods) => {
+                this.goods = JSON.parse(goods);
+                resolve();
+            })
+        })
+
     }
     getSumCostBasket() {
         //подсчет количества и стоимости товаров в корзине
     }
+
 }
 
 //Элемент в корзине
@@ -76,13 +107,9 @@ class GoodsList {
         // })
 
         return new Promise((resolve, reject) => {
-            makeGETRequest(`${API_URL}/catalogData.json`, (goods) => {
-                try {
+            makeGETRequest(`${API_URL}/catalogData.json`).then((goods) => {
                 this.goods = JSON.parse(goods);
-                    resolve(this.goods)
-                } catch {
-                    reject('Error');
-                }
+                resolve();
             })
         })
     }
@@ -108,4 +135,12 @@ list.fetchGoods()
     .then(() => {
         list.render();
         list.saySumm();
-    }, (error) => { console.log(error) });
+    });
+
+const basket = new Basket();
+basket.addToBasket();
+basket.getBasket().then(()=>{console.log(`после добавления в корзину ${basket}`)})
+basket.removeFromBasket()
+//basket.getBasket().then(()=>{console.log(`после удаления из корзины ${basket}`)})
+  
+
