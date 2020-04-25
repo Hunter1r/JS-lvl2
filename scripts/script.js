@@ -62,43 +62,50 @@ class GoodsList {
         this.goods = []
     }
 
-    fetchGoods(cb) {
+    fetchGoods() {
         // this.goods = [
         //     { title: 'Shirt', price: 150 },
         //     { title: 'Socks', price: 50 },
         //     { title: 'Jacket', price: 350 },
         //     { title: 'Shoes', price: 250 },
         // ]
-        makeGETRequest(`${API_URL}/catalogData.json`, (goods) => {
-            
-            this.goods = JSON.parse(goods);
-            cb();
-        })
-            
-        // return new Promise((resolve,reject)=>{
-        //     makeGETRequest(`${API_URL}/catalogData.json`, (goods) => {
-        //         this.goods = JSON.parse(goods);
-        //        // cb();
-        //     })
+        // makeGETRequest(`${API_URL}/catalogData.json`, (goods) => {
 
+        //     this.goods = JSON.parse(goods);
+        //     cb();
         // })
-        }
+
+        return new Promise((resolve, reject) => {
+            makeGETRequest(`${API_URL}/catalogData.json`, (goods) => {
+                try {
+                this.goods = JSON.parse(goods);
+                    resolve(this.goods)
+                } catch {
+                    reject('Error');
+                }
+            })
+        })
+    }
     render() {
-            let listHtml = '';
-            this.goods.forEach(good => {
-                const goodItem = new GoodsItem(good.product_name, good.price);
-                listHtml += goodItem.render();
-            });
-            document.querySelector('.goods-list').innerHTML = listHtml;
-        }
+        let listHtml = '';
+        this.goods.forEach(good => {
+            const goodItem = new GoodsItem(good.product_name, good.price);
+            listHtml += goodItem.render();
+        });
+        document.querySelector('.goods-list').innerHTML = listHtml;
+    }
     // определение стоимости товаров
     saySumm() {
-            let summ = 0;
-            this.goods.forEach(good => { summ += good.price })
+        let summ = 0;
+        this.goods.forEach(good => { summ += good.price })
         console.log('стоимость всех товаров = ' + summ);
-        }
+    }
 }
 
-    const list = new GoodsList();
-    list.fetchGoods(()=>{list.render();});
-    list.saySumm();
+const list = new GoodsList();
+//list.fetchGoods(()=>{list.render();});
+list.fetchGoods()
+    .then(() => {
+        list.render();
+        list.saySumm();
+    }, (error) => { console.log(error) });
