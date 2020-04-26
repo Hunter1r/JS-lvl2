@@ -141,6 +141,6 @@ const basket = new Basket();
 basket.add();
 basket.get().then(()=>{console.log(`после добавления в корзину ${basket}`)})
 basket.remove()
-//basket.getBasket().then(()=>{console.log(`после удаления из корзины ${basket}`)})
+
   
 
