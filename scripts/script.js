@@ -31,7 +31,7 @@ class Basket {
     constructor() {
         this.goods = []
     }
-    addToBasket() {
+    add() {
         //добавление товара в корзину
         return new Promise((resolve, reject) => {
             makeGETRequest(`${API_URL}/addToBasket.json`).then((goods) => {
@@ -40,7 +40,7 @@ class Basket {
             })
         })
     }
-    getBasket() {
+    get() {
         //получение содержимого корзины
         return new Promise((resolve, reject) => {
             makeGETRequest(`${API_URL}/getBasket.json`).then((goods) => {
@@ -49,7 +49,7 @@ class Basket {
             })
         })
     }
-    removeFromBasket() {
+    remove() {
         //удаление товара из корзины
         return new Promise((resolve, reject) => {
             makeGETRequest(`${API_URL}/deleteFromBasket.json`).then((goods) => {
@@ -138,9 +138,9 @@ list.fetchGoods()
     });
 
 const basket = new Basket();
-basket.addToBasket();
-basket.getBasket().then(()=>{console.log(`после добавления в корзину ${basket}`)})
-basket.removeFromBasket()
+basket.add();
+basket.get().then(()=>{console.log(`после добавления в корзину ${basket}`)})
+basket.remove()
 //basket.getBasket().then(()=>{console.log(`после удаления из корзины ${basket}`)})
   
 
