@@ -1,5 +1,10 @@
 'use strict';
+let searchbtn = document.querySelector('.search-button');
+let searchstr = document.querySelector('.goods-search')
 
+searchbtn.addEventListener('click',(el)=>{
+    list.filterGoods(searchstr.value);
+});
 
 function makeGETRequest(url) {
 
@@ -90,7 +95,8 @@ class GoodsItem {
 //список товаров
 class GoodsList {
     constructor() {
-        this.goods = []
+        this.goods = [];
+        this.filteredGoods = [];
     }
 
     fetchGoods() {
@@ -109,13 +115,16 @@ class GoodsList {
         return new Promise((resolve, reject) => {
             makeGETRequest(`${API_URL}/catalogData.json`).then((goods) => {
                 this.goods = JSON.parse(goods);
+                this.filteredGoods = JSON.parse(goods);
                 resolve();
             })
         })
     }
     render() {
         let listHtml = '';
-        this.goods.forEach(good => {
+        // this.goods.forEach(good => {
+            //console.log(this.filteredGoods);
+            this.filteredGoods.forEach(good => {
             const goodItem = new GoodsItem(good.product_name, good.price);
             listHtml += goodItem.render();
         });
@@ -126,6 +135,13 @@ class GoodsList {
         let summ = 0;
         this.goods.forEach(good => { summ += good.price })
         console.log('стоимость всех товаров = ' + summ);
+    }
+    filterGoods(value){
+        const regexp = new RegExp(value, 'i');
+        this.filteredGoods = this.goods.filter(good=>{
+            return regexp.test(good.product_name);
+        })
+        this.render();
     }
 }
 
@@ -139,8 +155,8 @@ list.fetchGoods()
 
 const basket = new Basket();
 basket.add();
-basket.get().then(()=>{console.log(`после добавления в корзину ${basket}`)})
-basket.remove()
+//basket.get().then(()=>{console.log(`после добавления в корзину ${basket}`)})
+//basket.remove()
 
   
 
