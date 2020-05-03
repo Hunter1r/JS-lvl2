@@ -1,10 +1,11 @@
 'use strict';
-let searchbtn = document.querySelector('.search-button');
-let searchstr = document.querySelector('.goods-search')
 
-searchbtn.addEventListener('click',(el)=>{
-    list.filterGoods(searchstr.value);
-});
+let searchbtn = document.querySelector('.search-button');
+//let searchstr = document.querySelector('.goods-search')
+
+// searchbtn.addEventListener('click', (el) => {
+//     list.filterGoods(searchstr.value);
+// });
 
 function makeGETRequest(url) {
 
@@ -98,7 +99,6 @@ class GoodsList {
         this.goods = [];
         this.filteredGoods = [];
     }
-
     fetchGoods() {
         // this.goods = [
         //     { title: 'Shirt', price: 150 },
@@ -123,8 +123,8 @@ class GoodsList {
     render() {
         let listHtml = '';
         // this.goods.forEach(good => {
-            //console.log(this.filteredGoods);
-            this.filteredGoods.forEach(good => {
+        //console.log(this.filteredGoods);
+        this.filteredGoods.forEach(good => {
             const goodItem = new GoodsItem(good.product_name, good.price);
             listHtml += goodItem.render();
         });
@@ -136,27 +136,82 @@ class GoodsList {
         this.goods.forEach(good => { summ += good.price })
         console.log('стоимость всех товаров = ' + summ);
     }
-    filterGoods(value){
+    filterGoods(value) {
         const regexp = new RegExp(value, 'i');
-        this.filteredGoods = this.goods.filter(good=>{
+        this.filteredGoods = this.goods.filter(good => {
             return regexp.test(good.product_name);
         })
         this.render();
     }
 }
 
-const list = new GoodsList();
-//list.fetchGoods(()=>{list.render();});
-list.fetchGoods()
-    .then(() => {
-        list.render();
-        list.saySumm();
-    });
+// const list = new GoodsList();
+// list.fetchGoods()
+//     .then(() => {
+//         list.render();
+//         list.saySumm();
+//     });
 
-const basket = new Basket();
-basket.add();
+// const basket = new Basket();
+// basket.add();
 //basket.get().then(()=>{console.log(`после добавления в корзину ${basket}`)})
 //basket.remove()
 
-  
 
+const app = new Vue({
+    el: '#app',
+    data: {
+        goods: [],
+        filteredGoods: [],
+        searchLine: '',
+        isVisibleCard: true
+    },
+    methods: {
+        makeGETRequest(url) {
+            const promise = new Promise((resolve, reject) => {
+                var xhr;
+                if (window.XMLHttpRequest) {
+                    xhr = new XMLHttpRequest();
+                } else if (window.ActiveXObject) {
+                    xhr = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4) {
+                        resolve(xhr.responseText)
+                    }
+                }
+                xhr.open('GET', url, true);
+                xhr.send();
+            })
+            return promise;
+        },
+        filterGoods(value) {
+            const regexp = new RegExp(value, 'i');
+            this.filteredGoods = this.goods.filter(good => {
+                return regexp.test(good.product_name);
+            })
+        },
+        clickHandler() {
+            this.filterGoods(this.searchLine);
+        },
+        clickBasket() {
+        }
+    },
+    mounted() {
+
+        // return new Promise((resolve, reject) => {
+        this.makeGETRequest(`${API_URL}/catalogData.json`).then((goods) => {
+            this.goods = JSON.parse(goods);
+            this.filteredGoods = JSON.parse(goods);
+            //     // resolve();
+        })
+        // })
+
+        // const list = new GoodsList();
+        // list.fetchGoods()
+        //     .then(() => {
+        //         list.render();
+        //         list.saySumm();
+        //     });
+    }
+})
