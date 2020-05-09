@@ -40,11 +40,7 @@ class Hamburger {
         this.topping = true;
         this.price = this.price + 15;
     }
-    addSause() {
-        this.sause = true;
-        this.price += 20;
-        this.cal += 5;
-    }
+    
     calculatePrice() {
         if (this.size == 'small') {
             this.price += 50;
@@ -79,7 +75,6 @@ class Hamburger {
 let burger = new Hamburger('small', ['cheese', 'salat', 'grass']);
 
 // burger.addTopping();
-// burger.addSause();
 burger.calculatePrice();
 console.log(burger);
 
