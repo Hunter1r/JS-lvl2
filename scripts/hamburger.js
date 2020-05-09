@@ -57,24 +57,11 @@ class Hamburger {
                 this.cal += itm.cal;
             }
         });
-
-        // if (this.stuffing == 'cheese') {
-        //     this.price += 10;
-        //     this.cal += 20;
-        // } else if (this.stuffing == 'green salad') {
-        //     this.price += 20;
-        //     this.cal += 5;
-        // } else if (this.stuffing == 'potatoes') {
-        //     this.price += 15;
-        //     this.cal += 10
-        // }
     }
 }
 
-//let burger = new Hamburger('small', 'cheese');
 let burger = new Hamburger('small', ['cheese', 'salat', 'grass']);
-
-// burger.addTopping();
+burger.addTopping();
 burger.calculatePrice();
 console.log(burger);
 
