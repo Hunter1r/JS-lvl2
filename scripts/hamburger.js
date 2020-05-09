@@ -1,6 +1,5 @@
 'use strict';
 
-let curval = 0;
 const stuff = [
     {
         name: 'cheese',
