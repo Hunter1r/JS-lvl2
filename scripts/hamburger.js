@@ -63,4 +63,3 @@ let burger = new Hamburger('small', ['cheese', 'salat', 'grass']);
 burger.addTopping();
 burger.calculatePrice();
 console.log(burger);
-
