@@ -14,17 +14,22 @@
         <header class="menu">
             <input type="text" class="goods-search" v-model="searchLine">
             <button class="search-button" type="button" v-on:click="clickHandler">Искать</button>
-            <button class="cart-button" type="button" v-on:click="clickBasket">Корзина</button>
+            <button class="cart-button" type="button" v-on:click="show = !show">Корзина</button>
         </header>
         <main>
             <div class="goods-list">
                 <div class="goods-item" v-for="good in filteredGoods">
+                    <div class="img-item">Picture</div>
                     <h3>{{ good.product_name }}</h3>
                     <p>{{good.price}}</p>
+                    <button class="add-to-basket">Добавить</button>
                 </div>
                 <div class="goods-empty" v-if="filteredGoods.length==0"><h3>No items</h3></div>
             </div>
         </main>
+        <aside  v-show="show" transition="slide">
+
+        </aside>
 
     </div>
 
