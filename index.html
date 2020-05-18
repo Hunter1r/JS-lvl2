@@ -22,7 +22,7 @@
                     <div class="img-item">Picture</div>
                     <h3>{{ good.product_name }}</h3>
                     <p>{{good.price}}</p>
-                    <button class="add-to-basket">Добавить</button>
+                    <button class="add-to-basket" v-on:click="add(good)">Добавить</button>
                 </div>
                 <div class="goods-empty" v-if="filteredGoods.length==0">
                     <h3>No items</h3>
@@ -30,26 +30,7 @@
             </div>
         </main>
         <aside v-show="show" transition="slide">
-            <div class="basket-items">
-                <div class="basket-item">
-                    <span>1.</span>
-                    <h4>Товар 1</h4>
-                    <span>2 шт.</span>
-                    <span>2500</span>
-                </div>
-                <div class="basket-item">
-                    <span>2.</span>
-                    <h4>Товар 2</h4>
-                    <span>5 шт.</span>
-                    <span>5500</span>
-                </div>
-                <div class="line"></div>
-                <div class="basket-total">
-                    <h4>Итого:</h4>
-                    <span>8000</span>
-                </div>
-            </div>
-
+            <basket v-bind:basket="basket"></basket>
         </aside>
 
     </div>
