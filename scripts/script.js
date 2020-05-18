@@ -157,14 +157,49 @@ class GoodsList {
 //basket.get().then(()=>{console.log(`после добавления в корзину ${basket}`)})
 //basket.remove()
 
+Vue.component('basket', {
+    props: ['basket'],
+    template:
+        `<div class="basket-items">
+    <div class="basket-item" v-for="(item, index) in basket">
+        <span>{{++index}}</span>
+        <h4>{{item.product_name}}</h4>
+        <span>{{item.count}}</span>
+        <span>{{item.price}}</span>
+    </div>
+        <div class="basket-total">
+            <h4>Итого:</h4>
+            <span>{{getSumBasket()}}</span>
+        </div>
+    </div>`
+    ,
+    data(basket) {
+        return {
+            basketSum: basket.basket,
+            count: 0
+        }
+    },
+    methods: {
+        getSumBasket() {
+            return this.basketSum.reduce((accum, curval) => {
+                return accum = accum + curval.price || curval.price;
+            }, 0)
+        }
+    },
+    computed: {
+        counting(){return this.count = this.count + 1}
+    }
+})
 
 const app = new Vue({
     el: '#app',
     data: {
         goods: [],
         filteredGoods: [],
+        basket: [],
         searchLine: '',
-        isVisibleCard: true
+        isVisibleCard: true,
+        show: false
     },
     methods: {
         makeGETRequest(url) {
@@ -195,6 +230,39 @@ const app = new Vue({
             this.filterGoods(this.searchLine);
         },
         clickBasket() {
+            // this.show = !show;
+        },
+        add(good) {
+            //добавление товара в корзину
+            //good.count = 1;
+
+            let el = this.basket.find((elem)=>elem==good);
+            if (el!=undefined){
+                el.count++;
+            }else {
+                good.count = 1;
+                this.basket.push(good);    
+            }
+
+
+            // let indx = this.basket.findIndex((elem)=>elem==good);
+            // if (indx!=-1){
+            //     this.basket[indx].count++;
+            //     console.log(this.basket[indx]);
+            // }else {
+            //     if(good.hasOwnProperty('count')==false){
+            //         good.count = 1;
+            //     }
+            //     this.basket.push(good);
+            // }
+
+            //return new Promise((resolve, reject) => {
+            //    makeGETRequest(`${API_URL}/addToBasket.json`).then((goods) => {
+            //       this.goods = JSON.parse(goods);
+            //       console.log(goods)
+            //      resolve();
+            //  })
+            //})
         }
     },
     mounted() {
