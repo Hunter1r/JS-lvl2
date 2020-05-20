@@ -1,11 +1,6 @@
 'use strict';
 
 let searchbtn = document.querySelector('.search-button');
-//let searchstr = document.querySelector('.goods-search')
-
-// searchbtn.addEventListener('click', (el) => {
-//     list.filterGoods(searchstr.value);
-// });
 
 function makeGETRequest(url) {
 
@@ -65,18 +60,6 @@ class Basket {
         })
 
     }
-    getSumCostBasket() {
-        //подсчет количества и стоимости товаров в корзине
-    }
-
-}
-
-//Элемент в корзине
-class ItemToBasket {
-    constructor(name, price) {
-        this.name = name; //наименование товара для корзины
-        this.price = price; //цена товара для корзины
-    }
 }
 
 //Товар
@@ -89,9 +72,6 @@ class GoodsItem {
         return `<div class="goods-item"><h3>​ ${this.product_name}​</h3><p> ${this.price}​</p></div>`;
     }
 }
-
-
-
 
 //список товаров
 class GoodsList {
