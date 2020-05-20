@@ -211,8 +211,7 @@ const app = new Vue({
         filteredGoods: [],
         basket: [],
         searchLine: '',
-        isVisibleCard: true,
-        show: false
+        isVisibleCart: false,
     },
     methods: {
         makeGETRequest(url) {
