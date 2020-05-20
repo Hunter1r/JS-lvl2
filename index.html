@@ -14,7 +14,7 @@
         <header class="menu">
             <input type="text" class="goods-search" v-model="searchLine">
             <button class="search-button" type="button" v-on:click="clickHandler">Искать</button>
-            <button class="cart-button" type="button" v-on:click="show = !show">Корзина</button>
+            <button class="cart-button" type="button" v-on:click="isVisibleCart = !isVisibleCart">Корзина</button>
         </header>
         <main>
             <div class="goods-list">
@@ -29,7 +29,7 @@
                 </div>
             </div>
         </main>
-        <aside v-show="show" transition="slide">
+        <aside v-if="isVisibleCart">
             <basket v-bind:basket="basket"></basket>
         </aside>
 
