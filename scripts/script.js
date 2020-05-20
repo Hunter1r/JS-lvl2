@@ -145,18 +145,6 @@ class GoodsList {
     }
 }
 
-// const list = new GoodsList();
-// list.fetchGoods()
-//     .then(() => {
-//         list.render();
-//         list.saySumm();
-//     });
-
-// const basket = new Basket();
-// basket.add();
-//basket.get().then(()=>{console.log(`после добавления в корзину ${basket}`)})
-//basket.remove()
-
 Vue.component('search', {
     template:
         `<div class="search-line"> 
@@ -174,7 +162,7 @@ Vue.component('search', {
             })
         }
     },
-    data(){
+    data() {
         return {
             srch: ""
         }
@@ -255,22 +243,8 @@ const app = new Vue({
             })
             return promise;
         },
-        // filterGoods(value) {
-        //     const regexp = new RegExp(value, 'i');
-        //     this.filteredGoods = this.goods.filter(good => {
-        //         return regexp.test(good.product_name);
-        //     })
-        // },
-        // clickHandler() {
-        //     this.filterGoods(this.searchLine);
-        // },
-        clickBasket() {
-            // this.show = !show;
-        },
         add(good) {
             //добавление товара в корзину
-            //good.count = 1;
-
             let el = this.basket.find((elem) => elem.id_product == good.id_product);
             if (el != undefined) {
                 el.count++;
@@ -280,18 +254,6 @@ const app = new Vue({
                 good.totalPrice = good.price;
                 this.basket.push({ ...good });
             }
-
-
-            // let indx = this.basket.findIndex((elem)=>elem==good);
-            // if (indx!=-1){
-            //     this.basket[indx].count++;
-            //     console.log(this.basket[indx]);
-            // }else {
-            //     if(good.hasOwnProperty('count')==false){
-            //         good.count = 1;
-            //     }
-            //     this.basket.push(good);
-            // }
 
             //return new Promise((resolve, reject) => {
             //    makeGETRequest(`${API_URL}/addToBasket.json`).then((goods) => {
@@ -304,20 +266,9 @@ const app = new Vue({
 
     },
     mounted() {
-
-        // return new Promise((resolve, reject) => {
         this.makeGETRequest(`${API_URL}/catalogData.json`).then((goods) => {
             this.goods = JSON.parse(goods);
             this.filteredGoods = JSON.parse(goods);
-            //     // resolve();
         })
-        // })
-
-        // const list = new GoodsList();
-        // list.fetchGoods()
-        //     .then(() => {
-        //         list.render();
-        //         list.saySumm();
-        //     });
     }
 })
