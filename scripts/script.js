@@ -157,6 +157,31 @@ class GoodsList {
 //basket.get().then(()=>{console.log(`после добавления в корзину ${basket}`)})
 //basket.remove()
 
+Vue.component('search', {
+    props: ['searchline'],
+    template:
+        `<div class="search-line"> 
+        <input type="text" class="goods-search" v-model="srch">
+    <button class="search-button" type="button" v-on:click="clickHandler(srch)">Искать</button>
+    </div>`,
+    methods: {
+        clickHandler(srch) {
+            this.filterGoods(srch);
+        },
+        filterGoods(value) {
+            const regexp = new RegExp(value, 'i');
+            this.$parent.filteredGoods = this.$parent.goods.filter(good => {
+                return regexp.test(good.product_name);
+            })
+        }
+    },
+    data(searchline){
+        return {
+            srch: ""
+        }
+    }
+})
+
 Vue.component('basket', {
     props: ['basket'],
     template:
@@ -210,7 +235,7 @@ const app = new Vue({
         goods: [],
         filteredGoods: [],
         basket: [],
-        searchLine: '',
+        searchline: '',
         isVisibleCart: false,
     },
     methods: {
@@ -232,15 +257,15 @@ const app = new Vue({
             })
             return promise;
         },
-        filterGoods(value) {
-            const regexp = new RegExp(value, 'i');
-            this.filteredGoods = this.goods.filter(good => {
-                return regexp.test(good.product_name);
-            })
-        },
-        clickHandler() {
-            this.filterGoods(this.searchLine);
-        },
+        // filterGoods(value) {
+        //     const regexp = new RegExp(value, 'i');
+        //     this.filteredGoods = this.goods.filter(good => {
+        //         return regexp.test(good.product_name);
+        //     })
+        // },
+        // clickHandler() {
+        //     this.filterGoods(this.searchLine);
+        // },
         clickBasket() {
             // this.show = !show;
         },
