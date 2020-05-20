@@ -77,3 +77,7 @@ aside {
     height: 2px;
     background-color: black;
 }
+
+.search-line{
+    display: inline;
+}
