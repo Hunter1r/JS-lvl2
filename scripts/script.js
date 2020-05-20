@@ -158,7 +158,6 @@ class GoodsList {
 //basket.remove()
 
 Vue.component('search', {
-    props: ['searchline'],
     template:
         `<div class="search-line"> 
         <input type="text" class="goods-search" v-model="srch">
@@ -175,7 +174,7 @@ Vue.component('search', {
             })
         }
     },
-    data(searchline){
+    data(){
         return {
             srch: ""
         }
@@ -201,8 +200,7 @@ Vue.component('basket', {
     ,
     data(basket) {
         return {
-            basketSum: basket.basket,
-            count: 0
+            basketSum: basket.basket
         }
     },
     methods: {
