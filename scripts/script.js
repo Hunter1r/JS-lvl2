@@ -223,6 +223,22 @@ const app = new Vue({
             })
             return promise;
         },
+        makePOSTRequest(url, data, callback) {
+            let xhr;
+            if (window.XMLHttpRequest) {
+                xhr = new XMLHttpRequest();
+            } else if (window.ActiveXObject) {
+                xhr = new ActiveXObject('Microsoft.XMLHTTP');
+            }
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    callback(zhr.responseText)
+                }
+            }
+            xhr.open('POST', url, true);
+            xhr.setRequestHeader('Content-Type', 'application/Json; charset=UTF-8');
+            xhr.send(data);
+        },
         add(good) {
             //добавление товара в корзину
             let el = this.basket.find((elem) => elem.id_product == good.id_product);
@@ -246,9 +262,11 @@ const app = new Vue({
 
     },
     mounted() {
-        this.makeGETRequest(`${API_URL}/catalogData.json`).then((goods) => {
+        // this.makeGETRequest(`${API_URL}/catalogData.json`).then((goods) => {
+        this.makeGETRequest(`/catalogData/catalog.json`).then((goods) => {
             this.goods = JSON.parse(goods);
             this.filteredGoods = JSON.parse(goods);
         })
+        
     }
 })
