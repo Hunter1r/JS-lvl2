@@ -188,6 +188,10 @@ Vue.component('basket', {
                     this.basket.splice(indx, 1);
                 }
             }
+
+            this.$parent.makePOSTRequest(`/removeFromCart`, item, (respText) => {
+                console.log(respText);
+            })
         }
     },
     computed: {
@@ -232,12 +236,14 @@ const app = new Vue({
             }
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
-                    callback(zhr.responseText)
+                    
+                    callback(xhr.responseText);
                 }
             }
+            console.log('data='+data);
             xhr.open('POST', url, true);
-            xhr.setRequestHeader('Content-Type', 'application/Json; charset=UTF-8');
-            xhr.send(data);
+            xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+            xhr.send(JSON.stringify(data));
         },
         add(good) {
             //добавление товара в корзину
@@ -251,22 +257,29 @@ const app = new Vue({
                 this.basket.push({ ...good });
             }
 
-            //return new Promise((resolve, reject) => {
+            // return new Promise((resolve, reject) => {
             //    makeGETRequest(`${API_URL}/addToBasket.json`).then((goods) => {
             //       this.goods = JSON.parse(goods);
             //       console.log(goods)
             //      resolve();
             //  })
-            //})
+            // })
+
+            this.makePOSTRequest(`/addToCart`, good, (respText) => {
+                console.log(respText);
+            })
         }
 
     },
     mounted() {
         // this.makeGETRequest(`${API_URL}/catalogData.json`).then((goods) => {
-        this.makeGETRequest(`/catalogData/catalog.json`).then((goods) => {
+        this.makeGETRequest(`/catalogData`).then((goods) => {
             this.goods = JSON.parse(goods);
             this.filteredGoods = JSON.parse(goods);
         })
-        
+        this.makeGETRequest(`/cartItems`).then((goods) => {
+            this.basket = JSON.parse(goods);
+        })
+
     }
 })
