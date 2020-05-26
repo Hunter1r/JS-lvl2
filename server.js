@@ -38,7 +38,8 @@ app.post('/addToCart',(req,res)=>{
             fs.writeFile('./catalogData/cart.json',JSON.stringify(cart),(err)=>{
                 console.log('done');
             })
-        }
+            res.send(data); //отправляем ответ на клиента. Ответ должен быть обязательно. Хотябы пустой
+        }else{res.send(`can't read file cart.json`);}
         
     })
 })
@@ -63,7 +64,8 @@ app.post('/removeFromCart',(req,res)=>{
             fs.writeFile('./catalogData/cart.json',JSON.stringify(cart),(err)=>{
                 console.log('done');
             })
-        }
+            res.send(data)
+        }else{res.send(`can't read file cart.json`)}
         
     })
 })
