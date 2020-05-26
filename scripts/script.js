@@ -265,7 +265,7 @@ const app = new Vue({
             // })
 
             this.makePOSTRequest(`/addToCart`, good, (respText) => {
-                console.log(respText);
+                console.log('resp text'+respText);
             })
         }
 
