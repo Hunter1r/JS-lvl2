@@ -1,0 +1,28 @@
+{
+  "name": "js-lvl2",
+  "version": "1.0.0",
+  "description": "home work repo",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11"
+  },
+  "devDependencies": {
+    "@vue/test-utils": "^1.0.3"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hunter1r/JS-lvl2.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Hunter1r/JS-lvl2/issues"
+  },
+  "homepage": "https://github.com/Hunter1r/JS-lvl2#readme"
+}
