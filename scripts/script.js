@@ -1,130 +1,5 @@
 'use strict';
 
-let searchbtn = document.querySelector('.search-button');
-
-function makeGETRequest(url) {
-
-    const promise = new Promise((resolve, reject) => {
-        var xhr;
-        if (window.XMLHttpRequest) {
-            xhr = new XMLHttpRequest();
-        } else if (window.ActiveXObject) {
-            xhr = new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-                //callback(xhr.responseText);
-                resolve(xhr.responseText)
-            }
-        }
-        xhr.open('GET', url, true);
-        xhr.send();
-    })
-
-    return promise;
-
-}
-
-const API_URL = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
-
-//корзина товаров
-class Basket {
-    constructor() {
-        this.goods = []
-    }
-    add() {
-        //добавление товара в корзину
-        return new Promise((resolve, reject) => {
-            makeGETRequest(`${API_URL}/addToBasket.json`).then((goods) => {
-                this.goods = JSON.parse(goods);
-                resolve();
-            })
-        })
-    }
-    get() {
-        //получение содержимого корзины
-        return new Promise((resolve, reject) => {
-            makeGETRequest(`${API_URL}/getBasket.json`).then((goods) => {
-                this.goods = JSON.parse(goods);
-                resolve();
-            })
-        })
-    }
-    remove() {
-        //удаление товара из корзины
-        return new Promise((resolve, reject) => {
-            makeGETRequest(`${API_URL}/deleteFromBasket.json`).then((goods) => {
-                this.goods = JSON.parse(goods);
-                resolve();
-            })
-        })
-
-    }
-}
-
-//Товар
-class GoodsItem {
-    constructor(product_name, price) {
-        this.product_name = product_name;
-        this.price = price
-    }
-    render() {
-        return `<div class="goods-item"><h3>​ ${this.product_name}​</h3><p> ${this.price}​</p></div>`;
-    }
-}
-
-//список товаров
-class GoodsList {
-    constructor() {
-        this.goods = [];
-        this.filteredGoods = [];
-    }
-    fetchGoods() {
-        // this.goods = [
-        //     { title: 'Shirt', price: 150 },
-        //     { title: 'Socks', price: 50 },
-        //     { title: 'Jacket', price: 350 },
-        //     { title: 'Shoes', price: 250 },
-        // ]
-        // makeGETRequest(`${API_URL}/catalogData.json`, (goods) => {
-
-        //     this.goods = JSON.parse(goods);
-        //     cb();
-        // })
-
-        return new Promise((resolve, reject) => {
-            makeGETRequest(`${API_URL}/catalogData.json`).then((goods) => {
-                this.goods = JSON.parse(goods);
-                this.filteredGoods = JSON.parse(goods);
-                resolve();
-            })
-        })
-    }
-    render() {
-        let listHtml = '';
-        // this.goods.forEach(good => {
-        //console.log(this.filteredGoods);
-        this.filteredGoods.forEach(good => {
-            const goodItem = new GoodsItem(good.product_name, good.price);
-            listHtml += goodItem.render();
-        });
-        document.querySelector('.goods-list').innerHTML = listHtml;
-    }
-    // определение стоимости товаров
-    saySumm() {
-        let summ = 0;
-        this.goods.forEach(good => { summ += good.price })
-        console.log('стоимость всех товаров = ' + summ);
-    }
-    filterGoods(value) {
-        const regexp = new RegExp(value, 'i');
-        this.filteredGoods = this.goods.filter(good => {
-            return regexp.test(good.product_name);
-        })
-        this.render();
-    }
-}
-
 Vue.component('search', {
     template:
         `<div class="search-line"> 
@@ -256,22 +131,12 @@ const app = new Vue({
                 this.basket.push({ ...good });
             }
 
-            // return new Promise((resolve, reject) => {
-            //    makeGETRequest(`${API_URL}/addToBasket.json`).then((goods) => {
-            //       this.goods = JSON.parse(goods);
-            //       console.log(goods)
-            //      resolve();
-            //  })
-            // })
-
             this.makePOSTRequest(`/addToCart`, good, (respText) => {
                 console.log('resp text'+respText);
             })
         }
-
     },
     mounted() {
-        // this.makeGETRequest(`${API_URL}/catalogData.json`).then((goods) => {
         this.makeGETRequest(`/catalogData`).then((goods) => {
             this.goods = JSON.parse(goods);
             this.filteredGoods = JSON.parse(goods);
@@ -279,6 +144,5 @@ const app = new Vue({
         this.makeGETRequest(`/cartItems`).then((goods) => {
             this.basket = JSON.parse(goods);
         })
-
     }
 })
