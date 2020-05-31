@@ -1,3 +1,8 @@
+// Данный файл не используется а его содержимое разделено в разные файлы:
+//module_vue_main.js
+//module_vue_basket.js
+//module_vue_search.js
+
 'use strict';
 
 Vue.component('search', {
